@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnIniciar = findViewById(R.id.btnIniciar);
 
         btnIniciar.setOnClickListener(v -> {
-            Intent intent=new Intent(MainActivity.this,PlayActivity.class);
+            Intent intent=new Intent(MainActivity.this,DispositivosViculadosActivity.class);
             startActivity(intent);
         });
 

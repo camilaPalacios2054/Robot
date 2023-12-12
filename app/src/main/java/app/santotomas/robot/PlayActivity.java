@@ -29,47 +29,47 @@ public class PlayActivity extends AppCompatActivity {
     private ConnectedThread MyConexionBT;
     private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static String address = null;
-    TextView txtMensaje;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-
-        bluetoothIn = new Handler() {
-            public void handleMessage(android.os.Message msg) {
-                if (msg.what == handlerState) {
-                    char MyCaracter = (char) msg.obj;
-                    if(MyCaracter=='1'){
-                        txtMensaje.setText("LED ENCENDIDO");
-                    }
-                    if(MyCaracter=='1'){
-                        txtMensaje.setText("LED APAGADO");
-                    }
-
-                }
-            }
-        };
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         VerificarEstadoBT();
 
         Button btnON = findViewById(R.id.btnON);
         Button btnOFF = findViewById(R.id.btnOFF);
         Button btnDesconectar = findViewById(R.id.btnDesconectar);
-        TextView txtMensaje = findViewById(R.id.txtMensaje);
+        TextView txtMensaje = (TextView) findViewById(R.id.txtMensaje);
+
+        bluetoothIn = new Handler() {
+            public void handleMessage(android.os.Message msg) {
+                if (msg.what == handlerState) {
+                    char MyCaracter = (char) msg.obj;
+                    if (MyCaracter == '1') {
+                        txtMensaje.setText("LED ENCENDIDO");
+                    }
+                    if (MyCaracter == '2') {
+                        txtMensaje.setText("LED APAGADO");
+                    }
+
+                }
+            }
+        };
 
 
         btnON.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 MyConexionBT.write("1");
             }
         });
         btnOFF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyConexionBT.write("0");
+                MyConexionBT.write("2");
             }
         });
         btnDesconectar.setOnClickListener(new View.OnClickListener() {
@@ -88,8 +88,17 @@ public class PlayActivity extends AppCompatActivity {
 
     }
 
-    private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException
-    {
+    private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return null;
+        }
         return device.createRfcommSocketToServiceRecord(BTMODULEUUID);
     }
 
@@ -144,14 +153,7 @@ public class PlayActivity extends AppCompatActivity {
             } else {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
+                    Toast.makeText(getBaseContext(), "El dispositivo no soporta Bluetooth", Toast.LENGTH_SHORT).show();
                 }
                 startActivityForResult(enableBtIntent, 1);
             }
