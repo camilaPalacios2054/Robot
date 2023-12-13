@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- PERMISOS BLUETOOTH -->
+
+    <!-- PERMISOS BLUETOOTH-->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_BLUETOOTH" />
 
     <application
         android:allowBackup="true"
@@ -19,10 +18,7 @@
         android:theme="@style/Theme.Robot"
         tools:targetApi="31">
         <activity
-            android:name=".SegundaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".DispositivosViculadosActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DispositivosViculadosActivity" />
+        <activity
+            android:name=".MainActivity" />
         <activity
             android:name=".PlayActivity"
             android:exported="false" />
